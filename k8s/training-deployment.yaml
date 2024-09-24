@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ml-training
+spec:
+  template:
+    metadata:
+      labels:
+        app: ml-training
+    spec:
+      containers:
+      - name: ml-training
+        image: leps2408/ml-training:latest  # Cambia por tu imagen en Docker Hub
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: "http://172.23.73.213:30000"  # Conectar al servidor de MLflow
+      restartPolicy: Never  # Asegura que no se reinicie
+

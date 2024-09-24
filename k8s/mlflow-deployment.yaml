@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow-server
+  template:
+    metadata:
+      labels:
+        app: mlflow-server
+    spec:
+      containers:
+      - name: mlflow-server
+        image: leps2408/mlflow-server:latest
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: mlflow-storage
+          mountPath: /mlflow/mlruns
+        command: ["mlflow"]
+        args:
+        - "server"
+        - "--host"
+        - "0.0.0.0"
+        - "--port"
+        - "5000"
+        - "--backend-store-uri"
+        - "sqlite:///mlflow.db"
+        - "--default-artifact-root"
+        - "/mlflow/mlruns"
+      volumes:
+      - name: mlflow-storage
+        persistentVolumeClaim:
+          claimName: mlflow-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-service
+spec:
+  type: NodePort  # Cambia a LoadBalancer si es necesario
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30000  # O cualquier puerto en el rango 30000-32767
+  selector:
+    app: mlflow-server
+

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ml-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-ml-app
+  template:
+    metadata:
+      labels:
+        app: flask-ml-app
+    spec:
+      containers:
+      - name: flask-ml-app
+        image: leps2408/flask-ml-app:latest  # Cambia por tu imagen en Docker Hub
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MLFLOW_TRACKING_URI
+          value: "http://172.23.73.213:5000"  # Cambia esto por la URI de tu servidor MLflow
+
