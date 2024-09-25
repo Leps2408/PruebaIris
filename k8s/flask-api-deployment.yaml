@@ -18,6 +18,10 @@ spec:
         ports:
         - containerPort: 5000
         env:
-        - name: MLFLOW_TRACKING_URI
-          value: "http://172.23.73.213:5000"  # Cambia esto por la URI de tu servidor MLflow
+        - name: MLFLOW_S3_ENDPOINT_URL
+          value: "http://172.23.73.213:9000"  # Cambia esto por la URI de tu servidor MLflow
+        - name: AWS_ACCESS_KEY_ID
+          value: "mi_usuario"  # Reemplaza con tu usuario de MinIO
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "mi_contraseña_segura"  # Reemplaza con tu contraseña de MinI
 

@@ -12,8 +12,8 @@ mlflow.set_tracking_uri("http://172.23.73.213:30000")
 def predict():
     try:
         # Cargar modelo desde MLflow usando el Run ID específico
-        run_id = "03a531c6a54b43c6bfce1914e7526f8f"
-        model_uri = f"runs:/{run_id}/model"
+        run_id = "model"
+        model_uri = f"models:/model/1"
         model = mlflow.pyfunc.load_model(model_uri)
 
         # Obtener datos de la solicitud

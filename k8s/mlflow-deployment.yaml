@@ -17,9 +17,13 @@ spec:
         image: leps2408/mlflow-server:latest
         ports:
         - containerPort: 5000
-        volumeMounts:
-        - name: mlflow-storage
-          mountPath: /mlflow/mlruns
+        env:
+        - name: MLFLOW_S3_ENDPOINT_URL
+          value: "http://172.23.73.213:9000"  # Cambia a la IP de tu máquina donde corre MinIO
+        - name: AWS_ACCESS_KEY_ID
+          value: "mi_usuario"  # Credenciales de MinIO
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "mi_contraseña_segura"  # Credenciales de MinIO
         command: ["mlflow"]
         args:
         - "server"
@@ -30,12 +34,11 @@ spec:
         - "--backend-store-uri"
         - "sqlite:///mlflow.db"
         - "--default-artifact-root"
-        - "/mlflow/mlruns"
+        - "s3://mlflow-artifacts"  # Cambia el almacenamiento local a MinIO
       volumes:
       - name: mlflow-storage
         persistentVolumeClaim:
-          claimName: mlflow-pvc
-
+          claimName: mlflow-pvc  # Mantiene el volumen persistente para otros usos (si lo necesitas)
 ---
 apiVersion: v1
 kind: Service

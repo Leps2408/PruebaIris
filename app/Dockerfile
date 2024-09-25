@@ -10,6 +10,7 @@ COPY app.py app.py
 
 # Instalar las dependencias
 RUN pip install Flask mlflow scikit-learn pandas
+RUN pip install boto3
 
 # Exponer el puerto 5000
 EXPOSE 5000
